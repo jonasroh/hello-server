@@ -1,5 +1,9 @@
 version: 0.2
 
+env:
+    exported-variables:
+          - AWS_DEFAULT_REGION
+
 phases:
   pre_build:
     commands:
@@ -23,5 +27,10 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
       - printf '[{"name":"hello-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
 artifacts:
-    files: imagedefinitions.json
+    files: 
+      - imagedefinitions.json
+      - imageDetail.json
+      - appspec.yaml
+      - taskdef-prod.json
